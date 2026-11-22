@@ -1,80 +1,992 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070b12">
+<meta name="theme-color" content="#02050c">
 <title>J.A.R.V.I.S.</title>
 <link rel="manifest" href="manifest.webmanifest">
+
 <style>
-:root{--bg:#070b12;--panel:#0d1420;--panel2:#111c2b;--line:#1b2b40;--cyan:#57d9ff;--blue:#347dff;--muted:#8fa2b9;--white:#edf6ff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 36%,#10213a 0,#070b12 54%);color:var(--white);font:15px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-button,input,select,textarea{font:inherit}button{color:inherit;cursor:pointer}
-header{height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #142235;background:#070b12cc;position:sticky;top:0;z-index:3;backdrop-filter:blur(14px)}
-.brand{font-size:14px;letter-spacing:.22em;font-weight:650}.iconbtn{background:none;border:0;color:#cfeaff;font-size:24px;padding:7px}
-main{max-width:760px;margin:auto;padding:24px 18px 120px}.home{min-height:calc(100vh - 190px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.eyebrow{color:#91abc4;letter-spacing:.24em;font-size:10px;margin:0 0 12px}.greeting{font-size:clamp(24px,6vw,34px);font-weight:400;margin:0}.sub{color:var(--muted);margin-top:9px}
-.orb-wrap{width:min(68vw,280px);aspect-ratio:1;margin:32px auto 26px;display:grid;place-items:center;position:relative;filter:drop-shadow(0 0 28px #248bff55)}
-.orb{width:78%;aspect-ratio:1;border-radius:48% 52% 58% 42%/44% 43% 57% 56%;background:radial-gradient(circle at 35% 28%,#e4fbff 0 2%,#7ce8ff 5%,#398bff 25%,#183d8b 53%,#10152f 72%,#050912 100%);box-shadow:inset -18px -22px 34px #020613,inset 10px 8px 24px #b5f5ff88,0 0 24px #3caaffaa;animation:float 5s ease-in-out infinite, morph 9s ease-in-out infinite}
-.orb:before,.orb:after{content:"";position:absolute;border:1px solid #55cfff55;border-radius:50%;inset:6%;transform:rotate(-24deg) scaleY(.38);animation:spin 12s linear infinite}
-.orb:after{inset:0;transform:rotate(65deg) scaleY(.25);animation-direction:reverse;opacity:.7}
-@keyframes float{50%{translate:0 -9px}}@keyframes morph{50%{border-radius:56% 44% 42% 58%/53% 58% 42% 47%}}@keyframes spin{to{rotate:360deg}}
-.status{font-size:12px;color:#9eb5cd;letter-spacing:.08em;min-height:20px}.composer{position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#070b12 24%);z-index:2}.compose-inner{max-width:720px;margin:auto;display:flex;gap:9px;background:#101a28;border:1px solid #24364c;border-radius:28px;padding:7px 9px;box-shadow:0 10px 35px #0008}.compose-inner input{min-width:0;flex:1;background:transparent;border:0;outline:0;color:white;padding:8px}.round{width:40px;height:40px;border:0;border-radius:50%;background:#183a61;color:#dff7ff}.round.primary{background:linear-gradient(135deg,#1d91d8,#315bda)}
-.drawer{position:fixed;inset:0;z-index:5;background:#0009;display:none}.drawer.open{display:block}.side{height:100%;width:min(86vw,340px);background:#0b121e;border-right:1px solid var(--line);padding:20px;overflow:auto}.sidehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.nav{width:100%;text-align:left;border:0;background:transparent;padding:13px;border-radius:12px;color:#dcecff;display:flex;gap:13px;align-items:center}.nav:hover,.nav.active{background:#14253a}.sectionlabel{font-size:10px;color:#7189a4;letter-spacing:.18em;margin:22px 12px 8px}.recent{padding:10px 12px;color:#a9bad0;font-size:13px;border-radius:9px}
-.page{display:none}.page.active{display:block}.page h2{font-size:25px;font-weight:500;margin:10px 0 6px}.hint{color:var(--muted);font-size:13px;margin:0 0 22px}
-.card{background:linear-gradient(145deg,#101c2b,#0c1420);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.muted{color:var(--muted);font-size:13px}.pill{border:1px solid #25435d;border-radius:99px;padding:5px 9px;color:#9bdfff;font-size:11px}
-.field{display:grid;gap:7px;margin:15px 0}.field label{color:#9db2c9;font-size:13px}.field input,.field select,.field textarea{background:#080f19;border:1px solid #263b53;color:white;border-radius:10px;padding:12px;width:100%}.action{background:#15395a;border:1px solid #28577e;border-radius:11px;padding:11px 14px}.secondary{background:#101b29;border:1px solid #26384e;border-radius:11px;padding:11px 14px}.item{padding:13px 0;border-bottom:1px solid #1b2a3b}.item:last-child{border:0}.small{font-size:11px;color:#8198b2}.hidden{display:none!important}
-.chatbubble{padding:14px;border-radius:14px;background:#101d2d;margin:12px 0;line-height:1.5}.answer{line-height:1.65}.sources{display:flex;gap:9px;margin-top:14px}.source{width:28px;height:28px;border-radius:50%;border:1px solid #284764;background:#12263b;color:#9fe7ff;font-size:11px}
-@media(min-width:700px){main{padding-top:34px}.home{min-height:calc(100vh - 210px)}}
+:root {
+  --bg:#02050c;
+  --blue:#1677ff;
+  --cyan:#72caff;
+  --white:#f5f8ff;
+  --muted:#9ba9bd;
+  --line:#1b2b40;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  background:
+    radial-gradient(ellipse at 50% 100%,#164b91 0%,#071b38 25%,#02050c 62%);
+  color:var(--white);
+  font:15px system-ui,-apple-system,Segoe UI,sans-serif;
+  min-height:100vh;
+}
+
+button,input,select,textarea {
+  font:inherit;
+}
+
+button {
+  color:inherit;
+  cursor:pointer;
+}
+
+/* CABEÇALHO */
+
+header {
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  background:#02050c88;
+  position:sticky;
+  top:0;
+  z-index:3;
+  backdrop-filter:blur(14px);
+}
+
+.brand {
+  font-size:14px;
+  letter-spacing:.22em;
+  font-weight:650;
+}
+
+.iconbtn {
+  background:none;
+  border:0;
+  color:#d9edff;
+  font-size:24px;
+  padding:7px;
+}
+
+/* TELA PRINCIPAL */
+
+main {
+  max-width:760px;
+  margin:auto;
+  padding:20px 18px 120px;
+}
+
+.home {
+  min-height:calc(100vh - 190px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.eyebrow {
+  display:none;
+}
+
+.greeting {
+  font-size:17px;
+  font-weight:400;
+  color:#c4cbd7;
+  margin:0;
+}
+
+.sub {
+  color:#fff;
+  font-size:clamp(30px,8vw,43px);
+  font-weight:650;
+  line-height:1.16;
+  letter-spacing:-1.8px;
+  max-width:370px;
+  margin:22px auto 0;
+}
+
+/* NÚCLEO HOLOGRÁFICO AZUL */
+
+.orb-wrap {
+  width:min(66vw,260px);
+  aspect-ratio:1;
+  margin:0 auto 25px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  filter:drop-shadow(0 0 28px #1677ff88);
+}
+
+.orb {
+  width:78%;
+  aspect-ratio:1;
+  position:relative;
+  border-radius:48% 52% 58% 42% / 44% 43% 57% 56%;
+
+  background:
+    radial-gradient(
+      circle at 35% 28%,
+      #e8f5ff 0%,
+      #8acaff 5%,
+      #398fff 18%,
+      #1260d9 38%,
+      #07347e 62%,
+      #031333 82%,
+      #010713 100%
+    );
+
+  box-shadow:
+    inset -18px -22px 34px #010817,
+    inset 10px 8px 24px #9bd6ff88,
+    0 0 24px #1677ffbb,
+    0 0 60px #0755ff66;
+
+  animation:
+    float 5s ease-in-out infinite,
+    morph 9s ease-in-out infinite;
+}
+
+.orb:before,
+.orb:after {
+  content:"";
+  position:absolute;
+  border:1px solid #55aaffaa;
+  border-radius:50%;
+  inset:6%;
+  transform:rotate(-24deg) scaleY(.38);
+  animation:spin 12s linear infinite;
+  box-shadow:0 0 12px #1677ff88;
+}
+
+.orb:after {
+  inset:0;
+  border-color:#83caffcc;
+  transform:rotate(65deg) scaleY(.25);
+  animation-direction:reverse;
+  opacity:.9;
+  box-shadow:0 0 18px #268affaa;
+}
+
+.orb-wrap:before {
+  content:"";
+  position:absolute;
+  inset:-15%;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    #1677ff22 0%,
+    #1677ff0a 45%,
+    transparent 70%
+  );
+  animation:pulse 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    translate:0 -9px;
+  }
+}
+
+@keyframes morph {
+  50% {
+    border-radius:56% 44% 42% 58% / 53% 58% 42% 47%;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate:360deg;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    transform:scale(1.18);
+    opacity:.5;
+  }
+}
+
+.status {
+  display:none;
+}
+
+/* CAMPO DE MENSAGEM */
+
+.composer {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:12px 16px calc(18px + env(safe-area-inset-bottom));
+  background:linear-gradient(
+    transparent,
+    #164b91 75%,
+    #8ccaff 160%
+  );
+  z-index:2;
+}
+
+.compose-inner {
+  max-width:720px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  background:linear-gradient(
+    135deg,
+    #3986c755,
+    #a6d8ff44
+  );
+
+  border:1px solid #a4d7ff66;
+  border-radius:50px;
+  padding:8px 12px 8px 25px;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 0 20px #68baff33,
+    inset 0 1px 3px #ffffff33;
+}
+
+.compose-inner input {
+  min-width:0;
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:white;
+  padding:12px 0;
+  font-size:17px;
+}
+
+.compose-inner input::placeholder {
+  color:#edf6ff;
+  opacity:.9;
+}
+
+.round {
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:white;
+  font-size:21px;
+}
+
+.round.primary {
+  background:linear-gradient(135deg,#268eff,#1455d9);
+}
+
+.hidden {
+  display:none!important;
+}
+
+/* MENU LATERAL */
+
+.drawer {
+  position:fixed;
+  inset:0;
+  z-index:5;
+  background:#0009;
+  display:none;
+}
+
+.drawer.open {
+  display:block;
+}
+
+.side {
+  height:100%;
+  width:min(86vw,340px);
+  background:#080f1b;
+  border-right:1px solid var(--line);
+  padding:20px;
+  overflow:auto;
+}
+
+.sidehead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+}
+
+.nav {
+  width:100%;
+  text-align:left;
+  border:0;
+  background:transparent;
+  padding:13px;
+  border-radius:12px;
+  color:#dcecff;
+  display:flex;
+  gap:13px;
+  align-items:center;
+}
+
+.nav:hover,.nav.active {
+  background:#14253a;
+}
+
+.sectionlabel {
+  font-size:10px;
+  color:#7189a4;
+  letter-spacing:.18em;
+  margin:22px 12px 8px;
+}
+
+.recent {
+  padding:10px 12px;
+  color:#a9bad0;
+  font-size:13px;
+  border-radius:9px;
+}
+
+/* DEMAIS TELAS */
+
+.page {
+  display:none;
+}
+
+.page.active {
+  display:block;
+}
+
+.page h2 {
+  font-size:25px;
+  font-weight:500;
+  margin:10px 0 6px;
+}
+
+.hint {
+  color:var(--muted);
+  font-size:13px;
+  margin:0 0 22px;
+}
+
+.card {
+  background:linear-gradient(145deg,#101c2b,#0c1420);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin:12px 0;
+}
+
+.row {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+
+.muted {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.field {
+  display:grid;
+  gap:7px;
+  margin:15px 0;
+}
+
+.field label {
+  color:#9db2c9;
+  font-size:13px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  background:#080f19;
+  border:1px solid #263b53;
+  color:white;
+  border-radius:10px;
+  padding:12px;
+  width:100%;
+}
+
+.action {
+  background:#15395a;
+  border:1px solid #28577e;
+  border-radius:11px;
+  padding:11px 14px;
+}
+
+.secondary {
+  background:#101b29;
+  border:1px solid #26384e;
+  border-radius:11px;
+  padding:11px 14px;
+}
+
+.item {
+  padding:13px 0;
+  border-bottom:1px solid #1b2a3b;
+}
+
+.item:last-child {
+  border:0;
+}
+
+.small {
+  font-size:11px;
+  color:#8198b2;
+}
+
+.chatbubble {
+  padding:14px;
+  border-radius:14px;
+  background:#101d2d;
+  margin:12px 0;
+  line-height:1.5;
+}
+
+.answer {
+  line-height:1.65;
+}
+
+@media(min-width:700px) {
+  main {
+    padding-top:34px;
+  }
+
+  .home {
+    min-height:calc(100vh - 210px);
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .orb,.orb:before,.orb:after,.orb-wrap:before {
+    animation:none;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><button class="iconbtn" id="menuBtn" aria-label="Abrir menu">☰</button><div class="brand">J.A.R.V.I.S.</div><button class="iconbtn" id="newBtn" aria-label="Nova conversa">＋</button></header>
+
+<header>
+  <button class="iconbtn" id="menuBtn" aria-label="Abrir menu">☰</button>
+  <div class="brand">J.A.R.V.I.S.</div>
+  <button class="iconbtn" id="newBtn" aria-label="Nova conversa">＋</button>
+</header>
+
 <main>
+
 <section class="page active" id="homePage">
- <div class="home"><p class="eyebrow">SISTEMA PESSOAL DE INTELIGÊNCIA</p><h1 class="greeting" id="greeting">Boa noite.</h1><p class="sub">Como posso ajudar?</p><div class="orb-wrap"><div class="orb" id="orb"></div></div><div class="status" id="status">À sua disposição</div></div>
+  <div class="home">
+
+    <p class="eyebrow">J.A.R.V.I.S.</p>
+
+    <div class="orb-wrap">
+      <div class="orb" id="orb"></div>
+    </div>
+
+    <p class="greeting" id="greeting">Olá, Ryan</p>
+
+    <h1 class="sub">
+      Como posso ajudar você hoje?
+    </h1>
+
+    <div class="status" id="status">
+      À sua disposição
+    </div>
+
+  </div>
 </section>
-<section class="page" id="chatPage"><h2>Conversa</h2><p class="hint">Protótipo da experiência de conversa.</p><div id="chatLog"></div></section>
-<section class="page" id="historyPage"><h2>Histórico</h2><p class="hint">Suas conversas recentes neste protótipo.</p><div id="historyList" class="card"></div></section>
-<section class="page" id="imagesPage"><h2>Imagens</h2><p class="hint">Sua galeria de imagens salvas.</p><input type="file" id="imageInput" accept="image/*" multiple><div id="imageList" class="card"></div></section>
-<section class="page" id="libraryPage"><h2>Biblioteca</h2><p class="hint">Seus livros digitais. Importe arquivos PDF ou EPUB.</p><input type="file" id="bookInput" accept=".pdf,.epub,application/pdf"><div id="bookList" class="card"></div></section>
-<section class="page" id="projectsPage"><h2>Projetos</h2><p class="hint">Ideias e planos que você quer desenvolver.</p><div class="card"><div class="field"><label>Título</label><input id="projectTitle" placeholder="Ex.: Criar meu servidor"></div><div class="field"><label>Pequeno resumo</label><textarea id="projectSummary" rows="2" placeholder="O que você pretende fazer?"></textarea></div><button class="action" id="addProject">Adicionar projeto</button></div><div id="projectList"></div></section>
-<section class="page" id="calendarPage"><h2>Calendário</h2><p class="hint">Nesta versão inicial, a integração nativa ainda não está conectada.</p><div class="card"><b>Integração com o calendário do Android</b><p class="muted">A versão Android nativa precisará solicitar permissão para ler e gravar eventos no calendário do aparelho. Este protótipo não acessa seus eventos pessoais.</p></div></section>
-<section class="page" id="customPage"><h2>Personalizar</h2><p class="hint">Preferências visuais e de comunicação.</p><div class="card">
- <div class="field"><label>Idioma da interface</label><select id="uiLang"><option value="pt">Português (Brasil)</option><option value="en">English</option><option value="es">Español</option></select></div>
- <div class="field"><label>Idioma em que o Jarvis fala</label><select id="voiceLang"><option>Português (Brasil)</option><option>English</option><option>Español</option></select></div>
- <div class="field"><label>Forma de tratamento</label><select id="tone"><option value="cortês">Cortês — “senhor”</option><option value="formal">Formal</option><option value="informal">Informal — “vc”, “pq”, “tbm”</option></select></div>
- <div class="field"><label>Voz</label><select id="voice"><option>Voz masculina — britânica (planejada)</option><option>Voz disponível no dispositivo</option></select></div>
- <button class="action" id="saveSettings">Salvar preferências</button><p class="small" id="settingsSaved"></p></div>
- <div class="card"><b>Sobre respostas e fontes</b><p class="muted">Padrão definido: resposta direta primeiro, explicação detalhada depois; ícones de fontes clicáveis no final. Pesquisa real e integração de IA serão conectadas nas próximas etapas.</p></div>
+
+<section class="page" id="chatPage">
+  <h2>Conversa</h2>
+  <p class="hint">Sua conversa com o J.A.R.V.I.S.</p>
+  <div id="chatLog"></div>
 </section>
-<section class="page" id="policiesPage"><h2>Políticas</h2><p class="hint">Visualização das regras do projeto. As regras obrigatórias dos provedores e do Android não podem ser removidas.</p><div class="card"><b>safety_rules.json</b><pre id="safetyView" style="white-space:pre-wrap;color:#a9c9e5;font-size:12px"></pre></div><div class="card"><b>privacy_rules.json</b><pre id="privacyView" style="white-space:pre-wrap;color:#a9c9e5;font-size:12px"></pre></div></section>
+
+<section class="page" id="historyPage">
+  <h2>Histórico</h2>
+  <p class="hint">Suas conversas recentes.</p>
+  <div id="historyList" class="card"></div>
+</section>
+
+<section class="page" id="imagesPage">
+  <h2>Imagens</h2>
+  <p class="hint">Sua galeria de imagens salvas.</p>
+  <input type="file" id="imageInput" accept="image/*" multiple>
+  <div id="imageList" class="card"></div>
+</section>
+
+<section class="page" id="libraryPage">
+  <h2>Biblioteca</h2>
+  <p class="hint">Importe seus livros digitais em PDF ou EPUB.</p>
+  <input type="file" id="bookInput" accept=".pdf,.epub,application/pdf">
+  <div id="bookList" class="card"></div>
+</section>
+
+<section class="page" id="projectsPage">
+  <h2>Projetos</h2>
+  <p class="hint">Ideias e planos que você quer desenvolver.</p>
+
+  <div class="card">
+    <div class="field">
+      <label>Título</label>
+      <input id="projectTitle" placeholder="Ex.: Criar meu servidor">
+    </div>
+
+    <div class="field">
+      <label>Pequeno resumo</label>
+      <textarea id="projectSummary" rows="2"
+        placeholder="O que você pretende fazer?"></textarea>
+    </div>
+
+    <button class="action" id="addProject">
+      Adicionar projeto
+    </button>
+  </div>
+
+  <div id="projectList"></div>
+</section>
+
+<section class="page" id="calendarPage">
+  <h2>Calendário</h2>
+  <p class="hint">Sua organização pessoal.</p>
+
+  <div class="card">
+    <b>Integração com o calendário do Android</b>
+    <p class="muted">
+      A versão Android nativa precisará solicitar permissão
+      para acessar e gravar eventos no calendário do aparelho.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="customPage">
+  <h2>Personalizar</h2>
+  <p class="hint">Preferências visuais e de comunicação.</p>
+
+  <div class="card">
+
+    <div class="field">
+      <label>Idioma da interface</label>
+      <select id="uiLang">
+        <option value="pt">Português (Brasil)</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Idioma em que o Jarvis fala</label>
+      <select id="voiceLang">
+        <option>Português (Brasil)</option>
+        <option>English</option>
+        <option>Español</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Forma de tratamento</label>
+      <select id="tone">
+        <option value="cortês">Cortês — senhor</option>
+        <option value="formal">Formal</option>
+        <option value="informal">Informal</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Voz</label>
+      <select id="voice">
+        <option>Voz masculina — britânica (planejada)</option>
+        <option>Voz disponível no dispositivo</option>
+      </select>
+    </div>
+
+    <button class="action" id="saveSettings">
+      Salvar preferências
+    </button>
+
+    <p class="small" id="settingsSaved"></p>
+  </div>
+
+  <div class="card">
+    <b>Sobre respostas e fontes</b>
+    <p class="muted">
+      Resposta direta primeiro, explicação detalhada depois.
+      Pesquisa real e integração de IA serão conectadas nas próximas etapas.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="policiesPage">
+  <h2>Políticas</h2>
+  <p class="hint">Regras de funcionamento e privacidade.</p>
+
+  <div class="card">
+    <b>safety_rules.json</b>
+    <pre id="safetyView" style="white-space:pre-wrap;color:#a9c9e5;font-size:12px"></pre>
+  </div>
+
+  <div class="card">
+    <b>privacy_rules.json</b>
+    <pre id="privacyView" style="white-space:pre-wrap;color:#a9c9e5;font-size:12px"></pre>
+  </div>
+</section>
+
 </main>
-<div class="composer" id="composer"><div class="compose-inner"><input id="message" placeholder="Pergunte alguma coisa..." autocomplete="off"><button class="round" id="micBtn" title="Voz">🎙</button><button class="round primary" id="sendBtn" title="Enviar">➤</button></div></div>
-<div class="drawer" id="drawer"><aside class="side"><div class="sidehead"><b>J.A.R.V.I.S.</b><button class="iconbtn" id="closeMenu">×</button></div><button class="nav" data-page="homePage">⌂ <span>Nova conversa</span></button><button class="nav" data-page="historyPage">◷ <span>Histórico</span></button><button class="nav" data-page="imagesPage">▧ <span>Imagens</span></button><button class="nav" data-page="libraryPage">▤ <span>Biblioteca</span></button><button class="nav" data-page="customPage">⚙ <span>Personalizar</span></button><button class="nav" data-page="projectsPage">▣ <span>Projetos</span></button><button class="nav" data-page="calendarPage">▦ <span>Calendário</span></button><button class="nav" data-page="policiesPage">◇ <span>Políticas</span></button><div class="sectionlabel">HISTÓRICO RECENTE</div><div id="drawerRecent"></div></aside></div>
+
+<!-- CAMPO DE INTERAÇÃO -->
+
+<div class="composer" id="composer">
+  <div class="compose-inner">
+
+    <input
+      id="message"
+      placeholder="Pergunte qualquer coisa..."
+      autocomplete="off"
+    >
+
+    <button class="round" id="micBtn" title="Falar">
+      <svg width="28" height="28" viewBox="0 0 28 28"
+        fill="none" stroke="currentColor"
+        stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 11v6 M8 7v14 M13 3v22 M18 8v12 M23 11v6"/>
+      </svg>
+    </button>
+
+    <button class="round primary hidden" id="sendBtn" title="Enviar">
+      ➤
+    </button>
+
+  </div>
+</div>
+
+<!-- MENU LATERAL -->
+
+<div class="drawer" id="drawer">
+  <aside class="side">
+
+    <div class="sidehead">
+      <b>J.A.R.V.I.S.</b>
+      <button class="iconbtn" id="closeMenu">×</button>
+    </div>
+
+    <button class="nav" data-page="homePage">⌂ <span>Nova conversa</span></button>
+    <button class="nav" data-page="historyPage">◷ <span>Histórico</span></button>
+    <button class="nav" data-page="imagesPage">▧ <span>Imagens</span></button>
+    <button class="nav" data-page="libraryPage">▤ <span>Biblioteca</span></button>
+    <button class="nav" data-page="customPage">⚙ <span>Personalizar</span></button>
+    <button class="nav" data-page="projectsPage">▣ <span>Projetos</span></button>
+    <button class="nav" data-page="calendarPage">▦ <span>Calendário</span></button>
+    <button class="nav" data-page="policiesPage">◇ <span>Políticas</span></button>
+
+    <div class="sectionlabel">HISTÓRICO RECENTE</div>
+    <div id="drawerRecent"></div>
+
+  </aside>
+</div>
+
 <script>
-const $=id=>document.getElementById(id);
-const pages=[...document.querySelectorAll('.page')];
-function showPage(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));$('drawer').classList.remove('open');$('composer').classList.toggle('hidden',!['homePage','chatPage'].includes(id));}
-$('menuBtn').onclick=()=>$('drawer').classList.add('open');$('closeMenu').onclick=()=>$('drawer').classList.remove('open');$('drawer').onclick=e=>{if(e.target===$('drawer'))$('drawer').classList.remove('open')};
-document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-$('newBtn').onclick=()=>{ $('chatLog').innerHTML=''; showPage('homePage'); $('message').focus(); };
-let conversations=JSON.parse(localStorage.getItem('j_conversations')||'[]');
-function renderHistory(){ $('historyList').innerHTML=conversations.length?conversations.map((c,i)=>`<div class="item" data-i="${i}"><b>${esc(c.title)}</b><div class="small">${esc(c.date)}</div></div>`).join(''):'<p class="muted">Nenhuma conversa salva.</p>'; $('drawerRecent').innerHTML=conversations.slice(0,5).map(c=>`<div class="recent">${esc(c.title)}</div>`).join('')||'<div class="recent muted">Sem conversas recentes</div>'; }
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function addMessage(text,who){let d=document.createElement('div');d.className=who==='user'?'chatbubble':'answer';d.textContent=(who==='user'?'Você: ':'J.A.R.V.I.S.: ')+text;$('chatLog').appendChild(d)}
-function send(){let v=$('message').value.trim();if(!v)return;$('message').value='';showPage('chatPage');addMessage(v,'user');$('status').textContent='Processando';$('orb').style.animationDuration='1.5s';setTimeout(()=>{let reply='Recebi sua mensagem. Esta é a interface inicial do J.A.R.V.I.S.; a conexão com os modelos de IA e a pesquisa verificável ainda será implementada. Não vou inventar uma resposta nem afirmar que pesquisei sem consultar fontes.';addMessage(reply,'ai');$('status').textContent='À sua disposição';$('orb').style.animationDuration='5s';conversations.unshift({title:v.slice(0,48),date:new Date().toLocaleString('pt-BR')});localStorage.setItem('j_conversations',JSON.stringify(conversations));renderHistory()},650)}
-$('sendBtn').onclick=send;$('message').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-$('micBtn').onclick=()=>{let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('status').textContent='Reconhecimento de voz indisponível neste navegador';return}let r=new SR();r.lang='pt-BR';r.onstart=()=>$('status').textContent='Ouvindo...';r.onresult=e=>$('message').value=e.results[0][0].transcript;r.onend=()=>$('status').textContent='À sua disposição';r.start()};
-let projects=JSON.parse(localStorage.getItem('j_projects')||'[]');function renderProjects(){$('projectList').innerHTML=projects.map(p=>`<div class="card"><b>${esc(p.title)}</b><p class="muted">${esc(p.summary)}</p></div>`).join('')||'<p class="muted">Nenhum projeto adicionado.</p>'}
-$('addProject').onclick=()=>{let title=$('projectTitle').value.trim(),summary=$('projectSummary').value.trim();if(!title)return;projects.push({title,summary});localStorage.setItem('j_projects',JSON.stringify(projects));$('projectTitle').value='';$('projectSummary').value='';renderProjects()};
-$('bookInput').onchange=e=>{let files=[...e.target.files];$('bookList').innerHTML=files.map(f=>`<div class="item">▤ ${esc(f.name)} <span class="small">${(f.size/1048576).toFixed(1)} MB</span></div>`).join('')||'<p class="muted">Nenhum livro importado nesta sessão.</p>'};
-$('imageInput').onchange=e=>{let files=[...e.target.files];$('imageList').innerHTML=files.map(f=>`<div class="item">▧ ${esc(f.name)}</div>`).join('')||'<p class="muted">Nenhuma imagem selecionada.</p>'};
-$('saveSettings').onclick=()=>{$('settingsSaved').textContent='Preferências salvas neste protótipo.';localStorage.setItem('j_settings',JSON.stringify({ui:$('uiLang').value,voiceLang:$('voiceLang').value,tone:$('tone').value,voice:$('voice').value}))};
-const s=JSON.parse(localStorage.getItem('j_settings')||'{}');if(s.ui)$('uiLang').value=s.ui;if(s.voiceLang)$('voiceLang').value=s.voiceLang;if(s.tone)$('tone').value=s.tone;if(s.voice)$('voice').value=s.voice;
-$('safetyView').textContent=JSON.stringify({ "discussao_informativa":true,"nao_facilitar_danos":true,"respeitar_regras_dos_provedores":true,"regras_editaveis_pelo_usuario":false },null,2);
-$('privacyView').textContent=JSON.stringify({ "proteger_chaves_de_api":true,"solicitar_permissoes_android":true,"nao_acessar_dados_sem_autorizacao":true,"permitir_exclusao_de_dados":true },null,2);
-renderHistory();renderProjects();
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+const $ = id => document.getElementById(id);
+
+const pages = [...document.querySelectorAll('.page')];
+
+function showPage(id) {
+  pages.forEach(p =>
+    p.classList.toggle('active', p.id === id)
+  );
+
+  $('drawer').classList.remove('open');
+
+  $('composer').classList.toggle(
+    'hidden',
+    !['homePage','chatPage'].includes(id)
+  );
+}
+
+$('menuBtn').onclick = () =>
+  $('drawer').classList.add('open');
+
+$('closeMenu').onclick = () =>
+  $('drawer').classList.remove('open');
+
+$('drawer').onclick = e => {
+  if (e.target === $('drawer')) {
+    $('drawer').classList.remove('open');
+  }
+};
+
+document.querySelectorAll('.nav').forEach(b => {
+  b.onclick = () => showPage(b.dataset.page);
+});
+
+$('newBtn').onclick = () => {
+  $('chatLog').innerHTML = '';
+  showPage('homePage');
+  $('message').focus();
+};
+
+/* HISTÓRICO */
+
+let conversations = JSON.parse(
+  localStorage.getItem('j_conversations') || '[]'
+);
+
+function renderHistory() {
+  $('historyList').innerHTML = conversations.length
+    ? conversations.map((c,i) =>
+      `<div class="item" data-i="${i}">
+        <b>${esc(c.title)}</b>
+        <div class="small">${esc(c.date)}</div>
+      </div>`
+    ).join('')
+    : '<p class="muted">Nenhuma conversa salva.</p>';
+
+  $('drawerRecent').innerHTML = conversations
+    .slice(0,5)
+    .map(c => `<div class="recent">${esc(c.title)}</div>`)
+    .join('') ||
+    '<div class="recent muted">Sem conversas recentes</div>';
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g,c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+}
+
+function addMessage(text,who) {
+  let d = document.createElement('div');
+
+  d.className = who === 'user'
+    ? 'chatbubble'
+    : 'answer';
+
+  d.textContent =
+    (who === 'user' ? 'Você: ' : 'J.A.R.V.I.S.: ') + text;
+
+  $('chatLog').appendChild(d);
+}
+
+/* ENVIO DE MENSAGENS */
+
+function send() {
+  let v = $('message').value.trim();
+
+  if (!v) return;
+
+  $('message').value = '';
+  $('sendBtn').classList.add('hidden');
+
+  showPage('chatPage');
+
+  addMessage(v,'user');
+
+  $('status').textContent = 'Processando';
+  $('orb').style.animationDuration = '1.5s';
+
+  setTimeout(() => {
+
+    let reply =
+      'Recebi sua mensagem. Esta é a interface inicial do J.A.R.V.I.S.; a conexão com os modelos de IA e a pesquisa verificável ainda será implementada.';
+
+    addMessage(reply,'ai');
+
+    $('status').textContent = 'À sua disposição';
+
+    $('orb').style.animationDuration = '5s';
+
+    conversations.unshift({
+      title:v.slice(0,48),
+      date:new Date().toLocaleString('pt-BR')
+    });
+
+    localStorage.setItem(
+      'j_conversations',
+      JSON.stringify(conversations)
+    );
+
+    renderHistory();
+
+  },650);
+}
+
+$('sendBtn').onclick = send;
+
+$('message').addEventListener('input', () => {
+  $('sendBtn').classList.toggle(
+    'hidden',
+    !$('message').value.trim()
+  );
+});
+
+$('message').addEventListener('keydown',e => {
+  if (e.key === 'Enter') send();
+});
+
+/* RECONHECIMENTO DE VOZ */
+
+$('micBtn').onclick = () => {
+
+  let SR =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SR) {
+    $('status').textContent =
+      'Reconhecimento de voz indisponível neste navegador';
+    return;
+  }
+
+  let r = new SR();
+
+  r.lang = 'pt-BR';
+
+  r.onstart = () => {
+    $('status').textContent = 'Ouvindo...';
+  };
+
+  r.onresult = e => {
+    $('message').value =
+      e.results[0][0].transcript;
+
+    $('sendBtn').classList.remove('hidden');
+  };
+
+  r.onend = () => {
+    $('status').textContent = 'À sua disposição';
+  };
+
+  r.start();
+};
+
+/* PROJETOS */
+
+let projects = JSON.parse(
+  localStorage.getItem('j_projects') || '[]'
+);
+
+function renderProjects() {
+
+  $('projectList').innerHTML = projects.map(p =>
+    `<div class="card">
+      <b>${esc(p.title)}</b>
+      <p class="muted">${esc(p.summary)}</p>
+    </div>`
+  ).join('') ||
+  '<p class="muted">Nenhum projeto adicionado.</p>';
+}
+
+$('addProject').onclick = () => {
+
+  let title = $('projectTitle').value.trim();
+  let summary = $('projectSummary').value.trim();
+
+  if (!title) return;
+
+  projects.push({title,summary});
+
+  localStorage.setItem(
+    'j_projects',
+    JSON.stringify(projects)
+  );
+
+  $('projectTitle').value = '';
+  $('projectSummary').value = '';
+
+  renderProjects();
+};
+
+/* BIBLIOTECA */
+
+$('bookInput').onchange = e => {
+
+  let files = [...e.target.files];
+
+  $('bookList').innerHTML = files.map(f =>
+    `<div class="item">
+      ▤ ${esc(f.name)}
+      <span class="small">
+        ${(f.size/1048576).toFixed(1)} MB
+      </span>
+    </div>`
+  ).join('') ||
+  '<p class="muted">Nenhum livro importado nesta sessão.</p>';
+};
+
+/* IMAGENS */
+
+$('imageInput').onchange = e => {
+
+  let files = [...e.target.files];
+
+  $('imageList').innerHTML = files.map(f =>
+    `<div class="item">▧ ${esc(f.name)}</div>`
+  ).join('') ||
+  '<p class="muted">Nenhuma imagem selecionada.</p>';
+};
+
+/* CONFIGURAÇÕES */
+
+$('saveSettings').onclick = () => {
+
+  $('settingsSaved').textContent =
+    'Preferências salvas neste protótipo.';
+
+  localStorage.setItem('j_settings',JSON.stringify({
+    ui:$('uiLang').value,
+    voiceLang:$('voiceLang').value,
+    tone:$('tone').value,
+    voice:$('voice').value
+  }));
+};
+
+const s = JSON.parse(
+  localStorage.getItem('j_settings') || '{}'
+);
+
+if(s.ui) $('uiLang').value = s.ui;
+if(s.voiceLang) $('voiceLang').value = s.voiceLang;
+if(s.tone) $('tone').value = s.tone;
+if(s.voice) $('voice').value = s.voice;
+
+/* POLÍTICAS */
+
+$('safetyView').textContent = JSON.stringify({
+  "discussao_informativa":true,
+  "nao_facilitar_danos":true,
+  "respeitar_regras_dos_provedores":true,
+  "regras_editaveis_pelo_usuario":false
+},null,2);
+
+$('privacyView').textContent = JSON.stringify({
+  "proteger_chaves_de_api":true,
+  "solicitar_permissoes_android":true,
+  "nao_acessar_dados_sem_autorizacao":true,
+  "permitir_exclusao_de_dados":true
+},null,2);
+
+/* INICIALIZAÇÃO */
+
+renderHistory();
+renderProjects();
+
+if (
+  'serviceWorker' in navigator &&
+  location.protocol.startsWith('http')
+) {
+  navigator.serviceWorker
+    .register('./sw.js')
+    .catch(() => {});
+}
+
 </script>
-</body></html>
+</body>
+</html>
