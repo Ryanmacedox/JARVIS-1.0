@@ -1,9 +1,0 @@
-{
-  "name": "J.A.R.V.I.S. — Assistente pessoal",
-  "short_name": "J.A.R.V.I.S.",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#070b12",
-  "theme_color": "#070b12",
-  "lang": "pt-BR"
-}
